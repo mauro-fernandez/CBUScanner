@@ -16,7 +16,6 @@ const App = () => {
   const [copiedText, setCopiedText] = useState('');
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [isBlurred, setIsBlurred] = useState(false)
 
   const checkSimpleValidation = (itemToValidate: any) => {
     if (itemToValidate.length !== 22) {
@@ -43,7 +42,6 @@ const App = () => {
       setAppStateVisible(appState.current);
       console.log('AppState', appState.current);
     });
-
     return () => {
       subscription.remove();
     };
@@ -52,7 +50,6 @@ const App = () => {
   useEffect(() => {
     if (appStateVisible === 'active') {
       fetchCopiedText();
-      setIsBlurred(false)
       if (checkSimpleValidation(copiedText)) {
         setCxu(copiedText);
       }
