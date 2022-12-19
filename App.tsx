@@ -10,19 +10,13 @@ import {
 // import { isValidCXU } from "./utils";
 import Clipboard from '@react-native-community/clipboard';
 import TextScanner from './TextScanner';
-import QrScanner from './QrScanner';
-import FaceScanner from './FaceScanner';
 
 const App = () => {
   const [cxu, setCxu] = useState('');
   const [copiedText, setCopiedText] = useState('');
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [textScanner, setTextScanner] = useState(true);
-
-  const toggleScanner = () => {
-    setTextScanner(prev => !prev)
-  }
+  const [isBlurred, setIsBlurred] = useState(false)
 
   const checkSimpleValidation = (itemToValidate: any) => {
     if (itemToValidate.length !== 22) {
@@ -58,6 +52,7 @@ const App = () => {
   useEffect(() => {
     if (appStateVisible === 'active') {
       fetchCopiedText();
+      setIsBlurred(false)
       if (checkSimpleValidation(copiedText)) {
         setCxu(copiedText);
       }
@@ -84,19 +79,15 @@ const App = () => {
       </View>
 
       <View style={styles.cameraContainer}>
-        {/*textScanner ? <TextScanner setCxu={setCxu} /> : <QrScanner /> */}
         <TextScanner setCxu={setCxu} />
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={toggleScanner}>
-          <Text>Switch QR Scanner or Text Reader</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={copyToClipboard}>
-          <Text>Click here to copy to Clipboard</Text>
+          <Text>Hace click aquí para copiar al portapapeles</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={fetchCopiedText}>
-          <Text>View copied text</Text>
+          <Text>Mostrar texto del portapapeles</Text>
         </TouchableOpacity>
 
         <Text style={{marginTop: 15}}>
@@ -147,6 +138,7 @@ const styles = StyleSheet.create({
     height: '40%',
     alignSelf: 'center',
     marginTop: '10%',
+    marginBottom: '10%',
     borderWidth: 12
   },
 });
